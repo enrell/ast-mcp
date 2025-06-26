@@ -1,0 +1,12 @@
+{
+    "servers": {
+        "ast-mcp": {
+            "type": "stdio",
+            "command": "uv",
+            "args": [
+                "run",
+                "src/server.py",
+            ]
+        }
+    }
+}

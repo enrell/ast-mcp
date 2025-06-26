@@ -1,10 +1,8 @@
 import subprocess
-from src.tools import mcp
 import os
 import json
 
 
-@mcp.tool()
 def ts_change_function_signature(
     project_root: str, function_name: str, new_signature: str
 ) -> dict:
@@ -46,3 +44,8 @@ def ts_change_function_signature(
         }
     except subprocess.CalledProcessError as e:
         return {"ok": False, "error": e.stderr or str(e)}
+
+
+def register_ts_tools(mcp):
+    """Register TypeScript tools with the MCP server"""
+    mcp.tool()(ts_change_function_signature)

@@ -39,22 +39,49 @@ project.getSourceFiles().forEach(sourceFile => {
     }
     if (isTarget && funcNode) {
       try {
-        const match = newSignature.match(/^\((.*)\)\s*(:\s*.+)?$/);
-        if (match) {
-          const params = match[1];
-          const type = match[2] || "";
-          funcNode.getParameters().forEach(p => p.remove());
-          params.split(",").map(s => s.trim()).filter(Boolean).forEach(param => {
-            funcNode!.addParameter({
-              name: param.split(":")[0].trim(),
-              type: param.split(":")[1]?.trim() || undefined,
-            });
-          });
-          if (type) funcNode.setReturnType(type.replace(":", "").trim());
-          changed = true;
+        // Check if newSignature includes function name (e.g., "hello(params): returnType")
+        const fullMatch = newSignature.match(/^(\w+)\s*\((.*)\)\s*(:\s*.+)?$/);
+        const paramsOnlyMatch = newSignature.match(/^\((.*)\)\s*(:\s*.+)?$/);
+        
+        let newFunctionName = "";
+        let params = "";
+        let type = "";
+        
+        if (fullMatch) {
+          // Format: "functionName(params): returnType"
+          newFunctionName = fullMatch[1];
+          params = fullMatch[2];
+          type = fullMatch[3] || "";
+        } else if (paramsOnlyMatch) {
+          // Format: "(params): returnType"
+          params = paramsOnlyMatch[1];
+          type = paramsOnlyMatch[2] || "";
         }
+        
+        // Change function name if specified
+        if (newFunctionName && funcNode.getKind() === SyntaxKind.FunctionDeclaration) {
+          (funcNode as FunctionDeclaration).rename(newFunctionName);
+        } else if (newFunctionName && funcNode.getKind() === SyntaxKind.MethodDeclaration) {
+          (funcNode as MethodDeclaration).rename(newFunctionName);
+        }
+        
+        // Change parameters
+        funcNode.getParameters().forEach(p => p.remove());
+        params.split(",").map(s => s.trim()).filter(Boolean).forEach(param => {
+          funcNode!.addParameter({
+            name: param.split(":")[0].trim(),
+            type: param.split(":")[1]?.trim() || undefined,
+          });
+        });
+        
+        // Change return type
+        if (type) funcNode.setReturnType(type.replace(":", "").trim());
+        
+        changed = true;
       } catch (e) {
-        // ignore
+        const errorMessage = e instanceof Error ? e.message : String(e);
+        console.error(`Error changing signature for function '${functionName}' in file '${sourceFile.getFilePath()}': ${errorMessage}`);
+        // Continue processing other functions instead of failing completely
       }
     }
   });
