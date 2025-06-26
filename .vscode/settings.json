@@ -1,0 +1,14 @@
+{
+  "chat.mcp.serverSampling": {
+    "ast-mcp/.vscode/mcp.json: ast-mcp": {
+      "allowedModels": [
+        "github.copilot-chat/gpt-4.1",
+        "github.copilot-chat/gemini-2.0-flash-001",
+        "github.copilot-chat/Gemini-models/gemini-2.5-flash-preview-04-17",
+        "github.copilot-chat/gemini-2.5-pro-preview-06-05",
+        "github.copilot-chat/Gemini-gemini-2.5-pro-preview-06-05",
+        "github.copilot-chat/gpt-4o"
+      ]
+    }
+  }
+}

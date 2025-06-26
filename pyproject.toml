@@ -1,0 +1,46 @@
+[project]
+name = "ast-mcp"
+version = "0.1.0"
+description = "ast-mcp is a MCP (Model Context Protocol) for AST (Abstract Syntax Tree) operations, providing a streaming HTTP server for LLMs (Large Language Models) to interact with ASTs."
+readme = "README.md"
+requires-python = ">=3.12"
+keywords = ["mcp", "llm", "streaming", "http", "server"]
+dependencies = [ 
+    "mcp",
+    "mcp[cli]",
+]
+
+[project.scripts]
+ast-mcp = "src.main:main"
+
+[tool.uv]
+package = true
+
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "pyright>=1.1.402",
+    "pytest>=8.4.1",
+    "ruff>=0.12.0",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src"]
+
+[tool.pyright]
+include = ["src"]
+venvPath = "."
+venv = ".venv"
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+ignore = []
+
+[tool.ruff]
+line-length = 80
+target-version = "py312"
+

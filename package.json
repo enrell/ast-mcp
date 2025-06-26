@@ -1,0 +1,19 @@
+{
+  "name": "ast-mcp-typescript",
+  "version": "0.1.0",
+  "description": "Ferramentas AST para TypeScript integradas ao MCP Python",
+  "main": "index.js",
+  "scripts": {
+    "tsc": "tsc",
+    "build": "tsc",
+    "start": "ts-node src/ast/typescript/change_signature.ts"
+  },
+  "dependencies": {
+    "ts-morph": "26.0.0",
+    "typescript": "5.8.3"
+  },
+  "devDependencies": {
+    "@types/node": "24.0.4",
+    "ts-node": "10.9.2"
+  }
+}
